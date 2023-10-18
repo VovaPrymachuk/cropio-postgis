@@ -10,18 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2023_10_14_214457) do
+ActiveRecord::Schema[7.1].define(version: 2023_10_17_170657) do
   # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
-  enable_extension "postgis"
+  enable_extension 'plpgsql'
+  enable_extension 'postgis'
 
-  create_table "fields", force: :cascade do |t|
-    t.string "name", null: false
-    t.integer "area"
-    t.geography "shape", limit: {:srid=>4326, :type=>"multi_polygon", :geographic=>true}
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["name"], name: "index_fields_on_name"
+  create_table 'fields', force: :cascade do |t|
+    t.string 'name', null: false
+    t.integer 'area'
+    t.geometry 'shape', limit: { :srid=>4326, :type=>'st_polygon' }
+    t.datetime 'created_at', null: false
+    t.datetime 'updated_at', null: false
+    t.index ['name'], name: 'index_fields_on_name'
   end
 
 end
