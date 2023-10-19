@@ -2,23 +2,23 @@ import React, { useState, useEffect } from 'react';
 import { Grid, Paper } from '@mui/material';
 import BasicMap from '../components/UI/BasicMap';
 import { FieldList } from '../components/FieldList';
-import axios from 'axios';
+import { getCoordinates } from '../api';
 
 export const HomePage = () => {
   const [coordinates, setCoordinates] = useState([]);
   const [recordDeleted, setRecordDeleted] = useState(false);
 
-  const fetchData = async () => {
+  const getCoordinatesResponse = async () => {
     try {
-      const response = await axios.get('http://localhost:3000/api/v1/coordinates');
-      setCoordinates(response.data);
+      const response = await getCoordinates();
+      setCoordinates(response);
     } catch (error) {
-      console.error('Error fetching data:', error);
+      console.error(error);
     }
-  };
+  }
 
   useEffect(() => {
-    fetchData();
+    getCoordinatesResponse()
   }, [recordDeleted]);
 
   const onRecordDeleted = () => setRecordDeleted(!recordDeleted)

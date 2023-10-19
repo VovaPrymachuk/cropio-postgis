@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { IField } from '../types/data';
-import axios from 'axios';
 import TableContainer from '@mui/material/TableContainer';
 import Table from '@mui/material/Table';
 import TableHead from '@mui/material/TableHead';
@@ -11,6 +10,8 @@ import TableCell from '@mui/material/TableCell';
 import Button from '@mui/material/Button';
 import EditIcon from '@mui/icons-material/Edit';
 import Stack from '@mui/material/Stack';
+
+import { getFields, handleDeleteField } from '../api';
 import { DeleteConfirmationDialog } from './UI/DeleteConfirmationDialog';
 
 
@@ -23,26 +24,28 @@ export const FieldList: React.FC<FieldListProps> = ({ onRecordDeleted }) => {
   const [isUpdate, setUpdate] = useState<boolean>(false);
 
   useEffect(() => {
-    getFields();
+    getFieldsResponse();
     setUpdate(false);
   }, [isUpdate]);
-
-  const getFields = async () => {
+  
+  const getFieldsResponse = async () => {
     try {
-      const response = await axios.get('http://localhost:3000/api/v1/fields');
-      setFields(response.data);
+      const response = await getFields();
+      setFields(response);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
-  };
+  }
 
   const handleDelete = async (id?: number) => {
-    try {
-      await axios.delete(`http://localhost:3000/api/v1/fields/${id}`);
-      setUpdate(true);
-      onRecordDeleted();
-    } catch (error) {
-      console.log(error);
+    if (id) {
+      try {
+        await handleDeleteField(id);
+        setUpdate(true);
+        onRecordDeleted();
+      } catch (error) {
+        console.error(error);
+      }
     }
   };
 

@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { MapContainer, TileLayer, FeatureGroup, Polygon } from 'react-leaflet';
-import axios, { AxiosError } from 'axios';
+import { AxiosError } from 'axios';
 import { EditControl } from 'react-leaflet-draw';
 import { Button, Grid, Typography, Box, Input } from '@mui/material';
+
 import { LatLng } from '../types/data';
+import { createField } from '../api';
+
 
 const CreateField = () => {
   const [name, setName] = useState<string>('');
@@ -22,21 +25,10 @@ const CreateField = () => {
   const handleSaveField = async () => {
     if (name && polygon.length > 0) {
       try {
-        const fieldData = {
-          field: {
-            name: name,
-            coordinates: polygon.map((latLng) => [latLng.lat, latLng.lng]),
-          },
-        };
-
-        const response = await axios.post(
-          'http://localhost:3000/api/v1/fields',
-          fieldData,
-        );
-
+        const response = await createField(name, polygon);
         setName('');
         setPolygon([]);
-        navigate(`/fields/${response.data.id}`);
+        navigate(`/fields/${response.id}`);
       } catch (error) {
         const err = error as AxiosError<{name: string[]}>
         const data = err.response?.data.name[0]

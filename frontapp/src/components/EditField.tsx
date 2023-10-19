@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { MapContainer, TileLayer, FeatureGroup, Polygon } from 'react-leaflet';
-import axios from 'axios';
 import { EditControl } from 'react-leaflet-draw';
 import { Button, Grid, Typography, Box, Input } from '@mui/material';
+
 import { LatLng } from '../types/data';
+import { getField, updateField } from '../api';
+
 
 interface LayerCoordinates {
   toGeoJSON: () => {
@@ -24,32 +26,32 @@ const EditField = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:3000/api/v1/fields/${id}`,
-        );
+        if (id) {
+          const fieldData = await getField(id);
 
-        const { name: fetchedName, coordinates } = response.data;
-        const flattenedCoordinates = coordinates.flat();
-        setName(fetchedName);
-        setPolygon(
-          flattenedCoordinates.map((coord: [number, number]) => ({
-            lat: coord[0],
-            lng: coord[1],
-          }),
-        ));
+          const { name: fetchedName, coordinates } = fieldData;
+          const flattenedCoordinates = coordinates.flat();
+          setName(fetchedName);
+          setPolygon(
+            flattenedCoordinates.map((coord: [number, number]) => ({
+              lat: coord[0],
+              lng: coord[1],
+            }),
+          ));
 
-        if (flattenedCoordinates.length > 0) {
-          const latSum = flattenedCoordinates.reduce(
-            (sum: number, coord: [number, number]) => sum + coord[0],
-            0,
-          );
-          const lngSum = flattenedCoordinates.reduce(
-            (sum: number, coord: [number, number]) => sum + coord[1],
-            0,
-          );
-          const latCenter = latSum / flattenedCoordinates.length;
-          const lngCenter = lngSum / flattenedCoordinates.length;
-          setCenter({ lat: latCenter, lng: lngCenter });
+          if (flattenedCoordinates.length > 0) {
+            const latSum = flattenedCoordinates.reduce(
+              (sum: number, coord: [number, number]) => sum + coord[0],
+              0,
+            );
+            const lngSum = flattenedCoordinates.reduce(
+              (sum: number, coord: [number, number]) => sum + coord[1],
+              0,
+            );
+            const latCenter = latSum / flattenedCoordinates.length;
+            const lngCenter = lngSum / flattenedCoordinates.length;
+            setCenter({ lat: latCenter, lng: lngCenter });
+          }
         }
       } catch (error) {
         console.error(error);
@@ -86,21 +88,10 @@ const EditField = () => {
   };
 
   const handleSaveField = async () => {
-    if (name && polygon.length > 0) {
+    if (id && name && polygon.length > 0) {
       try {
-        const fieldData = {
-          field: {
-            name: name,
-            coordinates: polygon.map((latLng) => [latLng.lat, latLng.lng]),
-          },
-        };
-
-        const response = await axios.put(
-          `http://localhost:3000/api/v1/fields/${id}`,
-          fieldData,
-        );
-
-        navigate(`/fields/${response.data.id}`);
+        const response = await updateField(id, name, polygon);
+        navigate(`/fields/${response.id}`);
       } catch (error) {
         console.error(error);
       }
