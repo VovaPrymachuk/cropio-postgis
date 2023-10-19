@@ -28,24 +28,27 @@ const EditField = () => {
           `http://localhost:3000/api/v1/fields/${id}`,
         );
 
-        let { name, coordinates } = response.data;
-        coordinates = coordinates.flat()
-        setName(name);
+        const { name: fetchedName, coordinates } = response.data;
+        const flattenedCoordinates = coordinates.flat();
+        setName(fetchedName);
         setPolygon(
-          coordinates.map((coord: [number, number]) => ({ lat: coord[0], lng: coord[1] })),
-        );
+          flattenedCoordinates.map((coord: [number, number]) => ({
+            lat: coord[0],
+            lng: coord[1],
+          }),
+        ));
 
-        if (coordinates.length > 0) {
-          const latSum = coordinates.reduce(
+        if (flattenedCoordinates.length > 0) {
+          const latSum = flattenedCoordinates.reduce(
             (sum: number, coord: [number, number]) => sum + coord[0],
             0,
           );
-          const lngSum = coordinates.reduce(
+          const lngSum = flattenedCoordinates.reduce(
             (sum: number, coord: [number, number]) => sum + coord[1],
             0,
           );
-          const latCenter = latSum / coordinates.length;
-          const lngCenter = lngSum / coordinates.length;
+          const latCenter = latSum / flattenedCoordinates.length;
+          const lngCenter = lngSum / flattenedCoordinates.length;
           setCenter({ lat: latCenter, lng: lngCenter });
         }
       } catch (error) {

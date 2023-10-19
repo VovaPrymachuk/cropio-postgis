@@ -40,7 +40,7 @@ const CreateField = () => {
       } catch (error) {
         const err = error as AxiosError<{name: string[]}>
         const data = err.response?.data.name[0]
-        if (data == 'has already been taken') {
+        if (data === 'has already been taken') {
           alert('A field with that name already exists');
         }
       }

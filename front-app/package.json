@@ -24,8 +24,7 @@
     "react-leaflet": "^4.2.1",
     "react-leaflet-draw": "^0.20.4",
     "react-router-dom": "^6.16.0",
-    "react-scripts": "^5.0.1",
-    "typescript": "^4.9.5"
+    "react-scripts": "^5.0.1"
   },
   "scripts": {
     "format": "prettier --write 'src/**/*.{js,jsx,ts,tsx,json}'",
@@ -55,7 +54,10 @@
   },
   "devDependencies": {
     "@types/leaflet": "^1.9.6",
+    "eslint": "^8.51.0",
+    "eslint-plugin-react": "^7.33.2",
     "prettier": "3.0.3",
+    "typescript": "^5.2.2",
     "web-vitals": "^3.5.0"
   }
 }

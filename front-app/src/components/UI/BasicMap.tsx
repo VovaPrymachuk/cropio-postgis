@@ -15,7 +15,7 @@ const BasicMap: React.FC<BasicMapProps> = ({ coordinates }) => {
   const [isUpdate, setUpdate] = useState<boolean>(false);
 
   useEffect(() => {
-    if (coordinates && coordinates?.length == 1) {
+    if (coordinates && coordinates?.length === 1) {
       const coords = coordinates?.flat()
       const latSum = coords.reduce((sum: number, coord: [number, number]) => sum + coord[0], 0);
       const lngSum = coords.reduce((sum: number, coord: [number, number]) => sum + coord[1], 0);
@@ -26,7 +26,7 @@ const BasicMap: React.FC<BasicMapProps> = ({ coordinates }) => {
     }
   }, [coordinates]);
 
-  if (!isUpdate && coordinates?.length == 1) {
+  if (!isUpdate && coordinates?.length === 1) {
     return null;
   }
 
