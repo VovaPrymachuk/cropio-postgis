@@ -1,7 +1,7 @@
 class Field < ApplicationRecord
   before_save :calculate_area
 
-  validates :name, presence: true
+  validates :name, uniqueness: true, presence: true
   validates :shape, presence: true
 
   private

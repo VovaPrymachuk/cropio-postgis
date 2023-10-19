@@ -21,7 +21,7 @@ ActiveRecord::Schema[7.1].define(version: 2023_10_17_170657) do
     t.geometry 'shape', limit: { :srid=>4326, :type=>'st_polygon' }
     t.datetime 'created_at', null: false
     t.datetime 'updated_at', null: false
-    t.index ['name'], name: 'index_fields_on_name'
+    t.index ['name'], name: 'index_fields_on_name', unique: true
   end
 
 end
