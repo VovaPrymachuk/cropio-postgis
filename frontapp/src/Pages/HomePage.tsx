@@ -8,18 +8,20 @@ export const HomePage = () => {
   const [coordinates, setCoordinates] = useState([]);
   const [recordDeleted, setRecordDeleted] = useState(false);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get('http://localhost:3000/api/v1/coordinates');
-        setCoordinates(response.data);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
+  const fetchData = async () => {
+    try {
+      const response = await axios.get('http://localhost:3000/api/v1/coordinates');
+      setCoordinates(response.data);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
 
+  useEffect(() => {
     fetchData();
   }, [recordDeleted]);
+
+  const onRecordDeleted = () => setRecordDeleted(!recordDeleted)
 
   return (
     <>
@@ -30,7 +32,7 @@ export const HomePage = () => {
       </Grid>
       <Grid item sm={8}>
         <Paper>
-          <FieldList onRecordDeleted={() => setRecordDeleted(!recordDeleted)} />
+          <FieldList onRecordDeleted={onRecordDeleted} />
         </Paper>
       </Grid>
     </>
