@@ -6,11 +6,4 @@
 #
 #   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
 #     MovieGenre.find_or_create_by!(name: genre_name)
-#   end
-
-9.times do
-  Field.new(
-    name: Faker::ProgrammingLanguage.name,
-    area: Faker::Number.between(from: 100, to: 1000)
-  ).save
-end
+#
