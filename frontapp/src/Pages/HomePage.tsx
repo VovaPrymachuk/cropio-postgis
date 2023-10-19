@@ -9,12 +9,8 @@ export const HomePage = () => {
   const [recordDeleted, setRecordDeleted] = useState(false);
 
   const getCoordinatesResponse = async () => {
-    try {
-      const response = await getCoordinates();
-      setCoordinates(response);
-    } catch (error) {
-      console.error(error);
-    }
+    const response = await getCoordinates();
+    setCoordinates(response);
   }
 
   useEffect(() => {

@@ -13,7 +13,7 @@ ENV RAILS_ENV="production" \
 
 # Install packages needed for deployment, including PostGIS and PostgreSQL
 RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y curl libsqlite3-0 libvips libproj-dev proj-bin libpq-dev build-essential postgresql postgresql-contrib postgis libgeos-dev && \
+    apt-get install --no-install-recommends -y curl libvips libproj-dev proj-bin libpq-dev build-essential postgresql postgresql-contrib postgis libgeos-dev && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
 # Install application gems

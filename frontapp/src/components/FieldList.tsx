@@ -29,23 +29,15 @@ export const FieldList: React.FC<FieldListProps> = ({ onRecordDeleted }) => {
   }, [isUpdate]);
   
   const getFieldsResponse = async () => {
-    try {
-      const response = await getFields();
-      setFields(response);
-    } catch (error) {
-      console.error(error);
-    }
+    const response = await getFields();
+    setFields(response);
   }
 
   const handleDelete = async (id?: number) => {
     if (id) {
-      try {
-        await handleDeleteField(id);
-        setUpdate(true);
-        onRecordDeleted();
-      } catch (error) {
-        console.error(error);
-      }
+      await handleDeleteField(id);
+      setUpdate(true);
+      onRecordDeleted();
     }
   };
 
