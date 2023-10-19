@@ -1,24 +1,20 @@
-# README
+# Cropio PostGIS
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This is the application for Cropio PostGIS. You can run it using Docker Compose.
 
-Things you may want to cover:
+## How to Run the Project
 
-* Ruby version
+1. Make sure you have Docker and Docker Compose installed. If not, install them before proceeding.
 
-* System dependencies
+2. First, build the containers using the following command:
 
-* Configuration
+```console
+   docker-compose build
+```
+3. Then, start the containers with this command:
 
-* Database creation
+```console
+   docker-compose up
+```
 
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+Your project will be available at http://localhost:4000/.
