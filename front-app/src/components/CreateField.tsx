@@ -1,14 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { MapContainer, TileLayer, FeatureGroup, Polygon } from 'react-leaflet';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { EditControl } from 'react-leaflet-draw';
 import { Button, Grid, Typography, Box, Input } from '@mui/material';
-
-interface LatLng {
-  lat: number;
-  lng: number;
-}
+import { LatLng } from '../types/data';
 
 const CreateField = () => {
   const [name, setName] = useState<string>('');
@@ -19,7 +15,7 @@ const CreateField = () => {
     setName(e.target.value);
   };
 
-  const handlePolygonCreated = (e: any) => {
+  const handlePolygonCreated = (e: { layer: { getLatLngs: () => React.SetStateAction<LatLng[]>[]; }; }) => {
     setPolygon(e.layer.getLatLngs()[0]);
   };
 
@@ -41,9 +37,10 @@ const CreateField = () => {
         setName('');
         setPolygon([]);
         navigate(`/fields/${response.data.id}`);
-      } catch (error: any) {
-        console.log(error.response?.data?.name[0])
-        if (error.response?.data?.name[0] == 'has already been taken') {
+      } catch (error) {
+        const err = error as AxiosError<{name: string[]}>
+        const data = err.response?.data.name[0]
+        if (data == 'has already been taken') {
           alert('A field with that name already exists');
         }
       }

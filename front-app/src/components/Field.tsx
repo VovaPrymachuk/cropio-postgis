@@ -73,14 +73,14 @@ export const Field = () => {
         <pre>
           {JSON.stringify({
             type: 'FeatureCollection',
-            features: field?.coordinates?.map((coords: any, index: any) => ({
+            features: field?.coordinates?.map((coords: [number, number][]) => ({
               type: 'Feature',
               properties: {},
               geometry: {
                 type: 'Polygon',
                 coordinates: [coords],
               },
-            })),
+            }))
           }, null, 2)}
         </pre>
       </Grid>

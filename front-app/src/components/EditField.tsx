@@ -4,13 +4,17 @@ import { MapContainer, TileLayer, FeatureGroup, Polygon } from 'react-leaflet';
 import axios from 'axios';
 import { EditControl } from 'react-leaflet-draw';
 import { Button, Grid, Typography, Box, Input } from '@mui/material';
+import { LatLng } from '../types/data';
 
-interface LatLng {
-  lat: number;
-  lng: number;
+interface LayerCoordinates {
+  toGeoJSON: () => {
+    geometry: {
+      coordinates: [number, number][][];
+    };
+  };
 }
 
-const EditField: React.FC = () => {
+const EditField = () => {
   const [name, setName] = useState<string>('');
   const [polygon, setPolygon] = useState<LatLng[]>([]);
   const [center, setCenter] = useState<LatLng | null>(null);
@@ -28,7 +32,7 @@ const EditField: React.FC = () => {
         coordinates = coordinates.flat()
         setName(name);
         setPolygon(
-          coordinates.map((coord: any[]) => ({ lat: coord[0], lng: coord[1] })),
+          coordinates.map((coord: [number, number]) => ({ lat: coord[0], lng: coord[1] })),
         );
 
         if (coordinates.length > 0) {
@@ -58,8 +62,10 @@ const EditField: React.FC = () => {
     setPolygon(e.layer.getLatLngs()[0]);
   };
 
-  const handlePolygonEdited = (e: any) => {
-    e.layers.eachLayer((a: any) => {
+  const handlePolygonEdited = (e: {
+    layers: { eachLayer: (arg0: (a: LayerCoordinates) => void) => void; };
+  }) => {
+    e.layers.eachLayer((a: LayerCoordinates) => {
       const coordinates = a.toGeoJSON().geometry.coordinates[0];
       const updatedLatLngs = coordinates.map(
         (coordinate: [number, number]) => ({
@@ -67,10 +73,10 @@ const EditField: React.FC = () => {
           lng: coordinate[0],
         }),
       );
-
+  
       setPolygon(updatedLatLngs);
     });
-  };
+  };  
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
